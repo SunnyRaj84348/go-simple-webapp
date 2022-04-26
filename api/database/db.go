@@ -23,10 +23,10 @@ func Create(conn string) {
 		log.Fatalln(err)
 	}
 
-	db = sdb
-
-	err = db.Ping()
+	err = sdb.Ping()
 	logError(err)
+
+	db = sdb
 }
 
 func Close() {
