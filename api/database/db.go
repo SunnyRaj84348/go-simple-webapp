@@ -19,9 +19,7 @@ func logError(err error) {
 
 func Create(conn string) {
 	sdb, err := sql.Open("mysql", conn+"/test")
-	if err != nil {
-		log.Fatalln(err)
-	}
+	logError(err)
 
 	err = sdb.Ping()
 	logError(err)
