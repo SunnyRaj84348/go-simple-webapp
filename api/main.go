@@ -2,6 +2,7 @@ package main
 
 import (
 	"api/database"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -38,6 +39,21 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	database.GetName(r.FormValue("fullname"), w)
 }
 
+func jsonHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		fmt.Fprintf(w, "Invalid Method")
+		return
+	}
+
+	data := database.GetAll()
+	jsonbyte, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	w.Write(jsonbyte)
+}
+
 func main() {
 	database.Create(os.Getenv("MYSQL_DATA"))
 	defer database.Close()
@@ -47,6 +63,7 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir("../web")))
 	http.HandleFunc("/form", formHandler)
 	http.HandleFunc("/query", searchHandler)
+	http.HandleFunc("/data", jsonHandler)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
