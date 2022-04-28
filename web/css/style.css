@@ -49,6 +49,12 @@ label {
     border-color: rgba(255, 255, 255, 0.396);
 }
 
+#showbtn {
+    padding: 4px;
+    margin-top: 7vh;
+    font-size: 15px;
+}
+
 #frame {
     display: block;
     margin-top: 25px;
@@ -64,6 +70,7 @@ label {
     #parent {
         flex-direction: column;
         align-items: center;
+        margin-top: 15vh;
     }
 
     #formdiv {
