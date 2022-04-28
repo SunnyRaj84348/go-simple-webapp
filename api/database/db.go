@@ -67,3 +67,27 @@ func GetName(fullname string, w http.ResponseWriter) {
 		fmt.Fprintf(w, `<p style="color: black; text-align: center;">entry not founded</p>`)
 	}
 }
+
+func GetAll() map[string][]string {
+	rows, err := db.Query(`
+		SELECT Name FROM Info
+	`)
+	logError(err)
+
+	defer rows.Close()
+
+	var name string
+	jsonMap := map[string][]string{}
+
+	for rows.Next() {
+		err = rows.Scan(&name)
+		logError(err)
+
+		jsonMap["name"] = append(jsonMap["name"], name)
+	}
+
+	err = rows.Err()
+	logError(err)
+
+	return jsonMap
+}
